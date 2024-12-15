@@ -1,20 +1,44 @@
 "use client"
-import { useSession, signIn, signOut } from "next-auth/react"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
+import Link from "next/link"
+import { useState } from "react"
+import { useDebounceValue } from 'usehooks-ts'
+import { useToast } from "@/hooks/use-toast"
 
-export default function Component() {
-  const { data: session } = useSession()
-  if (session) {
-    return (
-      <>
-        Signed in as {session.user?.email} <br />
-        <button className="bg-blue-500 text-white px-4 py-2 rounded-md" onClick={() => signOut()}>Sign out</button>
-      </>
-    )
-  }
+
+
+import React from 'react'
+import { useRouter } from "next/router"
+import { signUpSchema } from "@/Schemas/signUpSchema"
+
+const Page = () => {
+  const [username,setUsername] = useState("")
+  const [usernameMessage, setUsernameMessage] = useState("")
+  const [isLoading,setIsLoading] = useState(false)
+  const [isSubmit,setIsSubmit] = useState(false)
+  const useDebounceUsername = useDebounceValue(username, 300)
+  const { toast } = useToast()
+  const  router = useRouter();
+
+
+  // zod implementation
+
+  const form = useForm<z.infer<typeof signUpSchema>>({
+    resolver:zodResolver(signUpSchema),
+    defaultValues:{
+      username: '',
+      email: "",
+      password: "",
+    },
+  });
+
   return (
-    <>
-      Not signed in <br />
-      <button className="bg-blue-500 text-white px-4 py-2 rounded-md" onClick={() => signIn()}>Sign in</button>
-    </>
+    <div>
+      
+    </div>
   )
 }
+
+export default Page
