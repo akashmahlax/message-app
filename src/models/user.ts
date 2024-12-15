@@ -13,6 +13,7 @@ const messageSchema = new Schema<MESSAGE>({
 export interface USER extends Document {
   username: string;
   password: string;
+  email: string;
   verifycode:string;
   verifycodeexpiry:Date;
   isverified:boolean,
@@ -30,6 +31,5 @@ const userSchema = new Schema<USER>({
   messages: [messageSchema],
 });
 
-const UserModel = (mongoose.model.User as mongoose.Model<USER>) || mongoose.model<USER>("User", userSchema);
-
+const UserModel = mongoose.models.User || mongoose.model<USER>("User", userSchema);
 export default UserModel;
